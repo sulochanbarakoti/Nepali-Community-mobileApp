@@ -1,19 +1,35 @@
 import { SplashScreen } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { Text, View } from "react-native";
+import { Image, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import images from "../constants/images";
+import CustomButton from "../components/customButton";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   SplashScreen.hideAsync();
   return (
-    <SafeAreaView className="h-full">
-      <View className="flex-1 items-center justify-center bg-white">
-        <Text>Open up App.js to start working on your app!</Text>
-        <StatusBar style="auto" />
-      </View>
-      <StatusBar backgroundColor="white" style="auto" />
+    <SafeAreaView className="h-full bg-primary">
+      <ScrollView contentContainerStyle={{ height: "100%" }}>
+        <View className="w-full h-full justify-center items-center">
+          <Image
+            source={images.logo}
+            className="h-[200px]"
+            resizeMode="contain"
+          />
+          <View className="w-[80%] justify-center items-center">
+            <Text className="text-white text-center text-xl">
+              Welcome to Nepali Community Mobile Application
+            </Text>
+          </View>
+          <CustomButton
+            title="Continue with Email..."
+            otherStyle="w-[80%] mt-4"
+          />
+        </View>
+      </ScrollView>
+      <StatusBar backgroundColor="#1d161e" style="light" />
     </SafeAreaView>
   );
 }
