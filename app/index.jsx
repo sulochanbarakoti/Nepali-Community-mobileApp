@@ -1,4 +1,4 @@
-import { SplashScreen } from "expo-router";
+import { router, SplashScreen } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Image, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,17 +15,20 @@ export default function App() {
         <View className="w-full h-full justify-center items-center">
           <Image
             source={images.logo}
-            className="h-[200px]"
+            className="h-[250px]"
             resizeMode="contain"
           />
-          <View className="w-[80%] justify-center items-center">
-            <Text className="text-white text-center text-xl">
+
+          <View className="w-[90%] justify-center items-center">
+            <Text className="text-white text-center text-2xl">
               Welcome to Nepali Community Mobile Application
             </Text>
           </View>
+
           <CustomButton
             title="Continue with Email..."
             otherStyle="w-[80%] mt-4"
+            handlePress={() => router.push("sign-in")}
           />
         </View>
       </ScrollView>
