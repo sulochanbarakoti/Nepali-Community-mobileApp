@@ -5,10 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import images from "../constants/images";
 import CustomButton from "../components/customButton";
 
-SplashScreen.preventAutoHideAsync();
-
 export default function App() {
-  SplashScreen.hideAsync();
   return (
     <SafeAreaView className="h-full bg-primary">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
@@ -21,14 +18,21 @@ export default function App() {
 
           <View className="w-[90%] justify-center items-center">
             <Text className="text-white text-center text-2xl">
-              Welcome to Nepali Community Mobile Application
+              Welcome to Nepali Community In Finland.
             </Text>
           </View>
 
           <CustomButton
-            title="Continue with Email..."
-            otherStyle="w-[80%] mt-4"
+            title="Login to your account"
+            otherStyle="bg-secondary w-[80%] mt-4"
             handlePress={() => router.push("sign-in")}
+          />
+          <Text className="text-white text-2xl font-bold mt-3">'Or'</Text>
+
+          <CustomButton
+            title="Continue as Guest"
+            otherStyle="bg-secondary w-[80%] mt-4"
+            handlePress={() => router.push("home")}
           />
         </View>
       </ScrollView>
