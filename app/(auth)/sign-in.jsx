@@ -1,13 +1,15 @@
 import { View, Text, ScrollView, Image } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FormField from "../../components/formField";
 import images from "../../constants/images";
 import CustomButton from "../../components/customButton";
 import { AntDesign } from "@expo/vector-icons";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 
 const SignIn = () => {
+  const [form, setForm] = useState({ email: "", password: "" });
+
   return (
     <SafeAreaView className="h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
@@ -27,7 +29,11 @@ const SignIn = () => {
 
           <FormField title="Password" otherStyle="mt-5" />
 
-          <CustomButton title="Sign In" otherStyle="bg-primary w-[50%] mt-5" />
+          <CustomButton
+            title="Sign In"
+            otherStyle="bg-primary w-[50%] mt-5"
+            handlePress={() => router.push("home")}
+          />
 
           <View className="mt-5">
             <Text className="text-primary text-md font-bold">

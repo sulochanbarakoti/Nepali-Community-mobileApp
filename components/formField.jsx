@@ -16,6 +16,7 @@ const FormField = ({
         <TextInput
           className="flex-1 font-semibold text-base w-full"
           placeholder={title}
+          onChangeText={handleChangeText}
           secureTextEntry={title === "Password" && !showPassword}
         />
         {title === "Password" && (

@@ -1,13 +1,33 @@
-import { View, Text, ScrollView, Image } from "react-native";
-import React from "react";
+import { View, Text, ScrollView, Image, Alert } from "react-native";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FormField from "../../components/formField";
 import images from "../../constants/images";
 import CustomButton from "../../components/customButton";
 import { AntDesign } from "@expo/vector-icons";
 import { Link, router } from "expo-router";
+import { createUser } from "../../lib/appwrite";
 
 const SignUp = () => {
+  const [form, setForm] = useState({ username: "", email: "", password: "" });
+
+  const submit = async () => {
+    if (form.email !== "" && form.password !== "" && form.username !== "") {
+      try {
+        const result = await createUser(
+          form.username,
+          form.email,
+          form.password
+        );
+        console.log(result);
+      } catch (error) {
+        throw new Error(error);
+      }
+    } else {
+      Alert.alert("Error", "Please fill in all the fields");
+    }
+  };
+
   return (
     <SafeAreaView className="h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
@@ -23,14 +43,29 @@ const SignUp = () => {
             <Text className="text-2xl font-bold">Welcome!</Text>
             <Text className="text-md font-semibold">Create your account</Text>
           </View>
-          <FormField title="Username" otherStyle="mt-5" />
+          <FormField
+            title="Username"
+            otherStyle="mt-5"
+            value={form.username}
+            handleChangeText={(e) => setForm({ ...form, username: e })}
+          />
 
-          <FormField title="Email" otherStyle="mt-5" />
+          <FormField
+            title="Email"
+            otherStyle="mt-5"
+            value={form.email}
+            handleChangeText={(e) => setForm({ ...form, email: e })}
+          />
 
-          <FormField title="Password" otherStyle="mt-5" />
+          <FormField
+            title="Password"
+            otherStyle="mt-5"
+            value={form.password}
+            handleChangeText={(e) => setForm({ ...form, password: e })}
+          />
 
           <CustomButton
-            handlePress={() => router.push("home")}
+            handlePress={submit}
             title="Sign Up"
             otherStyle="bg-primary w-[50%] mt-5"
           />
