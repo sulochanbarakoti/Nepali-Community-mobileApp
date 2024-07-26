@@ -6,7 +6,7 @@ export const useGlobalContext = () => {
   return useContext(GlobalContext);
 };
 
-export const GlobalProvider = ({ children }) => {
+const GlobalProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -16,6 +16,7 @@ export const GlobalProvider = ({ children }) => {
         if (res) {
           console.log(user);
           setUser(res);
+          console.log(user);
           setIsLoggedIn(true);
         }
       })
@@ -24,6 +25,10 @@ export const GlobalProvider = ({ children }) => {
   return (
     <GlobalContext.Provider
       value={{ user, setUser, isLoggedIn, setIsLoggedIn }}
-    ></GlobalContext.Provider>
+    >
+      {children}
+    </GlobalContext.Provider>
   );
 };
+
+export default GlobalProvider;
