@@ -3,24 +3,29 @@ import { Tabs } from "expo-router";
 import { Text, View } from "react-native";
 import { FontAwesome, MaterialIcons, Ionicons } from "@expo/vector-icons";
 
-const TabIcon = ({ name }) => {
+const TabIcon = ({ name, focused }) => {
   let icon;
+  const color = focused ? "blue" : "#000";
   switch (name) {
     case "Home":
-      icon = <FontAwesome name="home" size={24} color="black" />;
+      icon = <FontAwesome name="home" size={24} color={color} />;
       break;
     case "Profile":
-      icon = <MaterialIcons name="account-circle" size={24} color="black" />;
+      icon = <MaterialIcons name="account-circle" size={24} color={color} />;
       break;
     case "Create":
-      icon = <Ionicons name="add-circle" size={24} color="black" />;
+      icon = <Ionicons name="add-circle" size={24} color={color} />;
       break;
   }
 
   return (
-    <View className="items-center justify-center">
+    <View className="items-center justify-center ">
       <View>{icon}</View>
-      <Text className="font-bold">{name}</Text>
+      <Text
+        className={`${focused ? "border-b-2 border-primary" : ""} font-bold`}
+      >
+        {name}
+      </Text>
     </View>
   );
 };
@@ -33,9 +38,10 @@ const TabsLayout = () => {
         tabBarActiveTintColor: "#FFA001",
         tabBarInactiveBackgroundColor: "#CDCDE0",
         tabBarStyle: {
-          borderTopWidth: 1,
+          backgroundColor: "#CDCDE0",
+          // borderTopWidth: 2,
           borderTopColor: "#CDCDE0",
-          // height: 60,
+          // height: 80,
         },
       }}
     >
@@ -44,7 +50,9 @@ const TabsLayout = () => {
         options={{
           headerShown: false,
           title: "Home",
-          tabBarIcon: () => <TabIcon name="Home" />,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon name="Home" focused={focused} />
+          ),
         }}
       />
       <Tabs.Screen
@@ -52,7 +60,9 @@ const TabsLayout = () => {
         options={{
           headerShown: false,
           title: "Create Post",
-          tabBarIcon: () => <TabIcon name="Create" />,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon name="Create" focused={focused} />
+          ),
         }}
       />
       <Tabs.Screen
@@ -60,7 +70,9 @@ const TabsLayout = () => {
         options={{
           headerShown: false,
           title: "Profile",
-          tabBarIcon: () => <TabIcon name="Profile" />,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon name="Profile" focused={focused} />
+          ),
         }}
       />
     </Tabs>
