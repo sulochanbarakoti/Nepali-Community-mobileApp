@@ -7,6 +7,7 @@ import {
   TextInput,
   Image,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -17,6 +18,7 @@ import { ResizeMode, Video } from "expo-av";
 import { createPost } from "../../lib/appwrite";
 import { useGlobalContext } from "../../context/globalProvider";
 import { router } from "expo-router";
+import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
 
 const CreatePost = () => {
   const { user } = useGlobalContext();
@@ -29,7 +31,7 @@ const CreatePost = () => {
   });
 
   const openPicker = async (selectType) => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes:
         selectType === "image"
           ? ImagePicker.MediaTypeOptions.Images
@@ -52,18 +54,19 @@ const CreatePost = () => {
       Alert.alert("Error", "Please fill in all fields");
     }
     try {
+      setUploading(true);
       await createPost({ ...form, userId: user.$id });
-      Alert.alert("Success", "Post uploaded successfully");
-      router.replace("home");
-    } catch (error) {
-      throw new Error(error);
-    } finally {
       setForm({
         title: "",
         description: "",
         image: null,
         video: null,
       });
+      setUploading(false);
+      Alert.alert("Success", "Post uploaded successfully");
+      router.replace("home");
+    } catch (error) {
+      throw new Error(error);
     }
   };
   return (
@@ -89,7 +92,8 @@ const CreatePost = () => {
               multiline
             />
           </View>
-          <View className="bg-white mt-5 rounded-xl justify-center items-center">
+          <View className="mt-5 space-y-3">
+            <Text className="font-semibold">Upload Image:</Text>
             <TouchableOpacity
               className="items-center"
               onPress={() => openPicker("image")}
@@ -101,7 +105,7 @@ const CreatePost = () => {
                   resizeMode="cover"
                 />
               ) : (
-                <View className="justify-center items-center h-64">
+                <View className="justify-center items-center h-64 bg-white w-full rounded-lg">
                   <Entypo name="upload" size={50} color="black" />
                   <Text className="text-secondary font-semibold ">
                     Upload image
@@ -110,7 +114,8 @@ const CreatePost = () => {
               )}
             </TouchableOpacity>
           </View>
-          <View className="bg-white mt-5 rounded-xl justify-center items-center">
+          <View className=" mt-5 space-y-3">
+            <Text className="font-semibold">Upload Video:</Text>
             <TouchableOpacity
               className="items-center"
               onPress={() => openPicker("video")}
@@ -123,7 +128,7 @@ const CreatePost = () => {
                   useNativeControls
                 />
               ) : (
-                <View className="justify-center items-center h-64">
+                <View className="justify-center items-center h-64 bg-white w-full rounded-xl">
                   <Entypo name="upload-to-cloud" size={50} color="black" />
                   <Text className="text-secondary font-semibold">
                     Upload video
@@ -135,10 +140,24 @@ const CreatePost = () => {
           <View>
             <CustomButton
               title="Post"
-              otherStyle="bg-secondary"
+              otherStyle="bg-secondary my-2"
               handlePress={() => submitPost()}
             />
           </View>
+          {uploading && (
+            <View
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                marginLeft: -50,
+                marginTop: -50,
+              }}
+            >
+              <ActivityIndicator size="large" color="#00ff00" />
+              <Text>Uploading...</Text>
+            </View>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>

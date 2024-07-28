@@ -15,7 +15,7 @@ const Profile = () => {
     await signOut();
     setIsLoggedIn(false);
     setUser(null);
-    router.replace("sign-in");
+    router.push("sign-in");
   };
   return (
     <SafeAreaView className="bg-gray-200 h-full">
@@ -29,7 +29,7 @@ const Profile = () => {
                   className="w-[150px] h-[150px] rounded-full"
                   resizeMode="cover"
                 />
-                <Text className="text-xl font-bold">@{user.username}</Text>
+                <Text className="text-xl font-bold">@{user?.username}</Text>
               </View>
             </View>
             <View>
