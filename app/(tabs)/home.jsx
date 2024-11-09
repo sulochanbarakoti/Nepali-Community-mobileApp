@@ -5,6 +5,7 @@ import {
   FlatList,
   RefreshControl,
   Image,
+  TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -12,6 +13,8 @@ import { getAllPost } from "../../lib/appwrite";
 import { useGlobalContext } from "../../context/globalProvider";
 import images from "../../constants/images";
 import AllPosts from "../../components/allPosts";
+import FormField from "../../components/formField";
+import { FontAwesome } from "@expo/vector-icons";
 
 const Home = () => {
   const [postData, setPostData] = useState({});
@@ -50,14 +53,25 @@ const Home = () => {
           />
         )}
         ListHeaderComponent={() => (
-          <View className="flex-row justify-between items-center mx-5 mt-5">
-            <View className="flex-row items-center">
-              <Text className="text-2xl font-bold">Welcome, </Text>
-              <Text className="font-semibold text-lg text-secondary">
-                {user?.username}
-              </Text>
+          <View>
+            <View className="flex-row justify-between items-center mx-5 mt-5">
+              <View className="flex-row items-center">
+                <Text className="text-2xl font-bold">Welcome, </Text>
+                <Text className="font-semibold text-lg text-secondary">
+                  {user?.username}
+                </Text>
+              </View>
+              <Image source={images.pngLogo} className="w-12 h-12" />
             </View>
-            <Image source={images.pngLogo} className="w-12 h-12" />
+            <View className="mt-5 justify-center items-center flex-row space-x-2">
+              <FormField otherStyle="w-[70%]" title="Search" />
+              <TouchableOpacity
+                activeOpacity={0.7}
+                className=" bg-secondary rounded-xl h-[50px] w-[15%] justify-center items-center "
+              >
+                <FontAwesome name="search" size={32} color="black" />
+              </TouchableOpacity>
+            </View>
           </View>
         )}
         ListEmptyComponent={() => (

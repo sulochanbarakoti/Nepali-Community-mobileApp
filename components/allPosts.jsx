@@ -74,18 +74,6 @@ const AllPosts = ({ title, description, image, video, creator, avatar }) => {
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity key={index} onPress={() => setPlay(true)}>
-                  {/* <Video
-                    source={{ uri: video }}
-                    className="w-full h-full border-white border-2"
-                    resizeMode="cover"
-                    useNativeControls
-                    onPlaybackStatusUpdate={(status) => {
-                      if (status.didJustFinish) {
-                        setPlay(false);
-                      }
-                    }}
-                  /> */}
-                  {/* {play ? ( */}
                   <Video
                     source={{ uri: video }}
                     className="w-full h-60 rounded-xl mt-3"
@@ -98,50 +86,10 @@ const AllPosts = ({ title, description, image, video, creator, avatar }) => {
                       }
                     }}
                   />
-                  {/* ) : ( */}
-                  {/* <TouchableOpacity
-                      activeOpacity={0.7}
-                      onPress={() => setPlay(true)}
-                      className="w-full h-60 rounded-xl mt-3 flex justify-center items-center"
-                    >
-                      <Image
-                        activeOpacity={0.1}
-                        source={Images.videoImage}
-                        className="w-full h-full rounded-xl mt-3"
-                        resizeMode="cover"
-                      />
-                    </TouchableOpacity> */}
-                  {/* )} */}
                 </TouchableOpacity>
               )}
             </View>
           ))}
-          {/* {play ? (
-            <Video
-              source={{ uri: video }}
-              className="w-full h-60 rounded-xl mt-3"
-              resizeMode="cover"
-              useNativeControls
-              shouldPlay
-              onPlaybackStatusUpdate={(status) => {
-                if (status.didJustFinish) {
-                  setPlay(false);
-                }
-              }}
-            />
-          ) : (
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() => setPlay(true)}
-              className="w-full h-60 rounded-xl mt-3 flex justify-center items-center"
-            >
-              <Image
-                source={{ uri: image }}
-                className="w-full h-full rounded-xl mt-3"
-                resizeMode="cover"
-              />
-            </TouchableOpacity>
-          )} */}
         </View>
       </View>
     </View>
