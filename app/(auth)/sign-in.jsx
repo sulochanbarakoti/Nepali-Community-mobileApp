@@ -1,32 +1,34 @@
 import { View, Text, ScrollView, Image, Alert } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FormField from "../../components/formField";
 import images from "../../constants/images";
 import CustomButton from "../../components/customButton";
 import { AntDesign } from "@expo/vector-icons";
-import { Link, router } from "expo-router";
-import { getCurrentUser, signInUser } from "../../lib/appwrite";
-import { useGlobalContext } from "../../context/globalProvider";
+import { Link, router, Redirect } from "expo-router";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUser, loginUser } from "../../redux/slices/userSlice";
 
 const SignIn = () => {
   const [form, setForm] = useState({ email: "", password: "" });
-  const { setUser, setIsLoggedIn } = useGlobalContext();
 
-  const submit = async () => {
-    if (form.email !== "" && form.password !== "") {
-      try {
-        await signInUser(form.email, form.password);
-        const result = await getCurrentUser();
-        setUser(result);
-        setIsLoggedIn(true);
-        router.push("home");
-      } catch (error) {
-        Alert.alert("Error", error.message);
-      }
-    } else {
-      Alert.alert("Error", "Please fill in all the fields");
-    }
+  const dispatch = useDispatch();
+  const { user, isLoggedIn, isLoading, error } = useSelector(
+    (state) => state.user
+  );
+
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, [dispatch]);
+
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+  if (isLoggedIn) return <Redirect href="home" />;
+  const submit = () => {
+    console.log("submit");
+    dispatch(loginUser({ email: form.email, password: form.password }));
+    console.log(user, isLoggedIn);
   };
 
   return (

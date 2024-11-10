@@ -1,14 +1,24 @@
-import { Redirect, router, SplashScreen } from "expo-router";
+import { Redirect, router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Image, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import images from "../constants/images";
 import CustomButton from "../components/customButton";
-import { useGlobalContext } from "../context/globalProvider";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { fetchUser } from "../redux/slices/userSlice";
 
 export default function App() {
-  const { isLoggedIn } = useGlobalContext();
+  const dispatch = useDispatch();
+  const { user, isLoggedIn, isLoading } = useSelector((state) => state.user);
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, [dispatch]);
+  if (isLoading) {
+    return null;
+  }
   if (isLoggedIn) return <Redirect href="home" />;
+  console.log(user, isLoggedIn);
   return (
     <SafeAreaView className="h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
@@ -29,13 +39,6 @@ export default function App() {
             title="Login to your account"
             otherStyle="bg-primary w-[80%] mt-4"
             handlePress={() => router.push("sign-in")}
-          />
-          <Text className="text-primary text-2xl font-bold mt-3">'Or'</Text>
-
-          <CustomButton
-            title="Continue as Guest"
-            otherStyle="bg-primary w-[80%] mt-4"
-            handlePress={() => router.push("home")}
           />
         </View>
       </ScrollView>

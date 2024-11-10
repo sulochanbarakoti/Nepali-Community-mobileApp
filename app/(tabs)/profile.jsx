@@ -2,20 +2,18 @@ import { View, Text, ScrollView, Image, TextInput } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
-import { useGlobalContext } from "../../context/globalProvider";
 import { Ionicons } from "@expo/vector-icons";
 import CustomButton from "../../components/customButton";
-import { router } from "expo-router";
-import { signOut } from "../../lib/appwrite";
+import { Redirect } from "expo-router";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../../redux/slices/userSlice";
 
 const Profile = () => {
-  const { user, setUser, setIsLoggedIn } = useGlobalContext();
-
+  const dispatch = useDispatch();
+  const { user, isLoggedIn } = useSelector((state) => state.user);
+  if (!isLoggedIn) return <Redirect href="sign-in" />;
   const LogOut = async () => {
-    await signOut();
-    setIsLoggedIn(false);
-    setUser(null);
-    router.push("sign-in");
+    dispatch(logoutUser());
   };
   return (
     <SafeAreaView className="bg-gray-200 h-full">
@@ -25,7 +23,7 @@ const Profile = () => {
             <View className=" mt-4 justify-center items-center">
               <View className=" w-[95%] h-[200px] justify-center bg-white items-center rounded-2xl space-y-2">
                 <Image
-                  source={{ uri: user?.avatar }}
+                  source={{ uri: user.username?.avatar }}
                   className="w-[150px] h-[150px] rounded-full"
                   resizeMode="cover"
                 />
