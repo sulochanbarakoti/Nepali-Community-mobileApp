@@ -1,90 +1,100 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  FlatList,
-  RefreshControl,
-  Image,
-  TouchableOpacity,
-} from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { getAllPost } from "../../lib/appwrite";
-import images from "../../constants/images";
-// import AllPosts from "../../components/allPosts";
-import FormField from "../../components/formField";
-import { FontAwesome } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { fetchUser } from "../../redux/slices/userSlice";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import images from "../../constants/images";
+import { StatusBar } from "expo-status-bar";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 const Home = () => {
-  // const [postData, setPostData] = useState({});
-  const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchUser());
   }, [dispatch]);
-  // const allPosts = async () => {
-  //   const data = await getAllPost();
-  //   setPostData(data);
-  // };
-
-  // const onRefresh = () => {
-  //   setRefreshing(true);
-  //   allPosts();
-  //   setRefreshing(false);
-  // };
-
-  // useEffect(() => {
-  //   allPosts();
-  // }, []);
 
   return (
-    <SafeAreaView className="h-full">
-      <FlatList
-        // data={postData}
-        keyExtractor={(item) => item.$id}
-        // renderItem={({ item }) => (
-        //   <AllPosts
-        //     title={item.title}
-        //     description={item.description}
-        //     image={item.image}
-        //     video={item.video}
-        //     creator={item.creator.username}
-        //     avatar={item.creator.avatar}
-        //   />
-        // )}
-        ListHeaderComponent={() => (
-          <View>
-            <View className="flex-row justify-between items-center mx-5 mt-5">
-              <View className="flex-row items-center">
-                <Text className="text-2xl font-bold">Welcome, </Text>
-                <Text className="font-semibold text-lg text-secondary">
-                  {/* {user?.username} */}
-                </Text>
+    <SafeAreaView className="h-full flex-1 bg-primary">
+      <View className="h-[15vh] justify-center items-center">
+        <Image
+          source={images.pngLogo}
+          className="h-20 w-22"
+          resizeMode="contain"
+        />
+        <Text className="text-white font-semibold text-xl">
+          Nepali Community Group, Jakobstad
+        </Text>
+      </View>
+      <View className="bg-gray-200 h-[85vh] py-2">
+        <View>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            className="h-10 px-2 "
+          >
+            <TouchableOpacity>
+              <View className="bg-secondary rounded-full p-1 px-4 mr-2 flex-row justify-center items-center">
+                <MaterialCommunityIcons
+                  name="account-group-outline"
+                  size={24}
+                  color="black"
+                />
+                <Text className="text-md font-bold pl-2">Members</Text>
               </View>
-              <Image source={images.pngLogo} className="w-12 h-12" />
-            </View>
-            <View className="mt-5 justify-center items-center flex-row space-x-2">
-              <FormField otherStyle="w-[70%]" title="Search" />
-              <TouchableOpacity
-                activeOpacity={0.7}
-                className=" bg-secondary rounded-xl h-[50px] w-[15%] justify-center items-center "
-              >
-                <FontAwesome name="search" size={32} color="black" />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View className="bg-secondary rounded-full p-1 px-4 mr-2 flex-row justify-center items-center">
+                <MaterialCommunityIcons
+                  name="account-group-outline"
+                  size={24}
+                  color="black"
+                />
+                <Text className="text-md font-bold pl-2">Members</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View className="bg-secondary rounded-full p-1 px-4 mr-2 flex-row justify-center items-center">
+                <MaterialCommunityIcons
+                  name="account-group-outline"
+                  size={24}
+                  color="black"
+                />
+                <Text className="text-md font-bold pl-2">Members</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View className="bg-secondary rounded-full p-1 px-4 mr-2 flex-row justify-center items-center">
+                <MaterialCommunityIcons
+                  name="account-group-outline"
+                  size={24}
+                  color="black"
+                />
+                <Text className="text-md font-bold pl-2">Members</Text>
+              </View>
+            </TouchableOpacity>
+          </ScrollView>
+          <View className="bg-gray-100 px-3 py-5">
+            <Text className="text-black text-lg font-bold mb-5">
+              Join the Nepali Community
+            </Text>
+            <View className="bg-gray-200 p-3 rounded-md shadow-lg space-y-2">
+              <Text className="text-base font-semibold">
+                Join our community !!
+              </Text>
+              <Text>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Voluptas soluta, consequatur fugit voluptates omnis, id ad
+                asperiores inventore quod nisi unde consequuntur, ex cupiditate
+                quis. Sunt veritatis non reiciendis excepturi?
+              </Text>
+              <TouchableOpacity className="p-2 border-2 border-secondary rounded-md self-start">
+                <Text>Join Group</Text>
               </TouchableOpacity>
             </View>
           </View>
-        )}
-        ListEmptyComponent={() => (
-          <View>
-            <Text>helo</Text>
-          </View>
-        )}
-        // refreshControl={
-        //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        // }
-      />
+        </View>
+      </View>
+      <StatusBar style="light" />
     </SafeAreaView>
   );
 };

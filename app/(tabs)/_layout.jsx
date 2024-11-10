@@ -1,31 +1,49 @@
 import React from "react";
 import { Tabs } from "expo-router";
 import { Text, View } from "react-native";
-import { FontAwesome, MaterialIcons, Ionicons } from "@expo/vector-icons";
+import {
+  AntDesign,
+  MaterialCommunityIcons,
+  Ionicons,
+} from "@expo/vector-icons";
 
 const TabIcon = ({ name, focused }) => {
   let icon;
-  const color = focused ? "blue" : "#000";
+  const color = "#FFFFFF";
   switch (name) {
     case "Home":
-      icon = <FontAwesome name="home" size={24} color={color} />;
+      icon = (
+        <Ionicons
+          name={`${focused ? "home" : "home-outline"}`}
+          size={24}
+          color={color}
+        />
+      );
       break;
     case "Profile":
-      icon = <MaterialIcons name="account-circle" size={24} color={color} />;
+      icon = (
+        <MaterialCommunityIcons
+          name={`${focused ? "account-circle" : "account-circle-outline"}`}
+          size={24}
+          color={color}
+        />
+      );
       break;
     case "Create":
-      icon = <Ionicons name="add-circle" size={24} color={color} />;
+      icon = (
+        <AntDesign
+          name={`${focused ? "pluscircle" : "pluscircleo"}`}
+          size={24}
+          color={color}
+        />
+      );
       break;
   }
 
   return (
     <View className="items-center justify-center ">
       <View>{icon}</View>
-      <Text
-        className={`${focused ? "border-b-2 border-primary" : ""} font-bold`}
-      >
-        {name}
-      </Text>
+      <Text className={` font-bold text-white`}>{name}</Text>
     </View>
   );
 };
@@ -35,13 +53,11 @@ const TabsLayout = () => {
     <Tabs
       screenOptions={{
         tabBarShowLabel: false,
-        tabBarActiveTintColor: "#FFA001",
-        tabBarInactiveBackgroundColor: "#CDCDE0",
+        tabBarActiveTintColor: "#FFFFFF",
+        tabBarInactiveBackgroundColor: "#1d161e",
         tabBarStyle: {
-          backgroundColor: "#CDCDE0",
-          // borderTopWidth: 2,
-          borderTopColor: "#CDCDE0",
-          // height: 80,
+          backgroundColor: "#1d161e",
+          height: 50,
         },
       }}
     >
