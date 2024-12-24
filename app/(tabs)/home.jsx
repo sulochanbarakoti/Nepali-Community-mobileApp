@@ -6,15 +6,42 @@ import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import images from "../../constants/images";
 import { StatusBar } from "expo-status-bar";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { useRouter } from "expo-router";
 
 const Home = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
+
   useEffect(() => {
     dispatch(fetchUser());
   }, [dispatch]);
 
+  const handleViewDetails = (event) => {
+    router.push({
+      pathname: "eventDetailsPage",
+      params: { event: JSON.stringify(event) },
+    });
+  };
+
+  const events = [
+    {
+      title: "Dashain Event",
+      details: "Details about the upcoming event 1. Date, time, and location.",
+      date: "2023-12-01",
+      time: "10:00 AM",
+      location: "Jakobstad",
+    },
+    {
+      title: "Tihar Event",
+      details: "Details about the upcoming event 2. Date, time, and location.",
+      date: "2023-12-15",
+      time: "2:00 PM",
+      location: "Jakobstad",
+    },
+  ];
+
   return (
-    <SafeAreaView className="h-full flex-1 bg-primary">
+    <SafeAreaView className="h-full bg-primary">
       <View className="h-[15vh] justify-center items-center">
         <Image
           source={images.pngLogo}
@@ -25,8 +52,8 @@ const Home = () => {
           Nepali Community Group, Jakobstad
         </Text>
       </View>
-      <View className="bg-gray-200 h-[85vh] py-2">
-        <View>
+      <ScrollView>
+        <View className="bg-gray-200 py-2">
           <ScrollView
             horizontal={true}
             showsHorizontalScrollIndicator={false}
@@ -92,8 +119,30 @@ const Home = () => {
               </TouchableOpacity>
             </View>
           </View>
+
+          {/* Coming Events Section */}
+          <View className="bg-gray-100 px-3 py-5 mt-5">
+            <Text className="text-black text-lg font-bold mb-0">
+              Coming Events
+            </Text>
+            {events.map((event, index) => (
+              <View
+                key={index}
+                className="bg-gray-200 p-3 rounded-md shadow-lg space-y-2 mt-4"
+              >
+                <Text className="text-base font-semibold">{event.title}</Text>
+                <Text>{event.details}</Text>
+                <TouchableOpacity
+                  className="p-2 border-2 border-secondary rounded-md self-start"
+                  onPress={() => handleViewDetails(event)}
+                >
+                  <Text>View Details</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+          </View>
         </View>
-      </View>
+      </ScrollView>
       <StatusBar style="light" />
     </SafeAreaView>
   );

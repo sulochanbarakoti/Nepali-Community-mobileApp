@@ -9,7 +9,7 @@ import {
 
 const TabIcon = ({ name, focused }) => {
   let icon;
-  const color = "#FFFFFF";
+  const color = `${focused ? "#fafafa" : "#a6a5a2"}`;
   switch (name) {
     case "Home":
       icon = (
@@ -43,7 +43,9 @@ const TabIcon = ({ name, focused }) => {
   return (
     <View className="items-center justify-center ">
       <View>{icon}</View>
-      <Text className={` font-bold text-white`}>{name}</Text>
+      <Text className={`${focused ? "text-white font-bold" : "text-gray-400"}`}>
+        {name}
+      </Text>
     </View>
   );
 };

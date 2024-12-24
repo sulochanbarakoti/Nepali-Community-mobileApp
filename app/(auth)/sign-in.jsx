@@ -1,11 +1,18 @@
-import { View, Text, ScrollView, Image, Alert } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FormField from "../../components/formField";
 import images from "../../constants/images";
 import CustomButton from "../../components/customButton";
 import { AntDesign } from "@expo/vector-icons";
-import { Link, router, Redirect } from "expo-router";
+import { Link, Redirect } from "expo-router";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser, loginUser } from "../../redux/slices/userSlice";
 
@@ -22,11 +29,12 @@ const SignIn = () => {
   }, [dispatch]);
 
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return <ActivityIndicator size="large" color="#0000ff" />;
   }
+
   if (isLoggedIn) return <Redirect href="home" />;
+
   const submit = () => {
-    console.log("submit");
     dispatch(loginUser({ email: form.email, password: form.password }));
     console.log(user, isLoggedIn);
   };
@@ -49,14 +57,18 @@ const SignIn = () => {
           <FormField
             title="Email"
             otherStyle="mt-5"
+            value={form.email}
             handleChangeText={(e) => setForm({ ...form, email: e })}
           />
 
           <FormField
             title="Password"
             otherStyle="mt-5"
+            value={form.password}
             handleChangeText={(e) => setForm({ ...form, password: e })}
           />
+
+          {error && <Text className="text-red-500">{error}</Text>}
 
           <CustomButton
             title="Sign In"

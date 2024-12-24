@@ -1,6 +1,5 @@
 import { Redirect, router } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { Image, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, Image, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import images from "../constants/images";
 import CustomButton from "../components/customButton";
@@ -11,14 +10,23 @@ import { fetchUser } from "../redux/slices/userSlice";
 export default function App() {
   const dispatch = useDispatch();
   const { user, isLoggedIn, isLoading } = useSelector((state) => state.user);
+
   useEffect(() => {
     dispatch(fetchUser());
   }, [dispatch]);
+
   if (isLoading) {
-    return null;
+    return (
+      <SafeAreaView className="h-full justify-center items-center">
+        <ActivityIndicator size="large" color="#0000ff" />
+      </SafeAreaView>
+    );
   }
+
   if (isLoggedIn) return <Redirect href="home" />;
+
   console.log(user, isLoggedIn);
+
   return (
     <SafeAreaView className="h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
@@ -42,7 +50,6 @@ export default function App() {
           />
         </View>
       </ScrollView>
-      <StatusBar style="light" />
     </SafeAreaView>
   );
 }
