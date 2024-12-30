@@ -12,10 +12,8 @@ const Layout = () => {
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="eventDetailsPage"
-            options={{ title: "Event Details" }}
-          />
+          <Stack.Screen name="eventPage" options={{ title: "Event Page" }} />
+          <Stack.Screen name="qrScanner" options={{ title: "QR Scanner" }} />
         </Stack>
       </GlobalProvider>
     </Provider>

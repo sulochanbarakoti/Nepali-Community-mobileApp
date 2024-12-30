@@ -6,7 +6,6 @@ import {
   MaterialCommunityIcons,
   Ionicons,
 } from "@expo/vector-icons";
-import CustomButton from "../../components/customButton";
 import { Redirect } from "expo-router";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../redux/slices/userSlice";
@@ -29,7 +28,7 @@ const Profile = () => {
             <View className="mt-4 justify-center items-center">
               <View className="w-[95%] h-[250px] justify-center bg-white items-center rounded-2xl shadow-lg space-y-2">
                 <Image
-                  source={{ uri: user.username?.avatar }}
+                  source={{ uri: user?.avatar }}
                   className="w-[150px] h-[150px] rounded-full border-4 border-primary"
                   resizeMode="cover"
                 />

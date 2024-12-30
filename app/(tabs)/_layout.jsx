@@ -1,11 +1,7 @@
 import React from "react";
 import { Tabs } from "expo-router";
 import { Text, View } from "react-native";
-import {
-  AntDesign,
-  MaterialCommunityIcons,
-  Ionicons,
-} from "@expo/vector-icons";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 
 const TabIcon = ({ name, focused }) => {
   let icon;
@@ -29,10 +25,10 @@ const TabIcon = ({ name, focused }) => {
         />
       );
       break;
-    case "Create":
+    case "Tickets":
       icon = (
-        <AntDesign
-          name={`${focused ? "pluscircle" : "pluscircleo"}`}
+        <Ionicons
+          name={`${focused ? "ticket" : "ticket-outline"}`}
           size={24}
           color={color}
         />
@@ -74,12 +70,12 @@ const TabsLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="createPost"
+        name="tickets"
         options={{
-          headerShown: false,
-          title: "Create Post",
+          headerShown: true,
+          title: "Tickets",
           tabBarIcon: ({ focused }) => (
-            <TabIcon name="Create" focused={focused} />
+            <TabIcon name="Tickets" focused={focused} />
           ),
         }}
       />

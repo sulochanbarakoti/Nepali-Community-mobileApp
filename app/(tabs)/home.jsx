@@ -18,13 +18,14 @@ const Home = () => {
 
   const handleViewDetails = (event) => {
     router.push({
-      pathname: "eventDetailsPage",
+      pathname: "eventPage",
       params: { event: JSON.stringify(event) },
     });
   };
 
   const events = [
     {
+      id: 1,
       title: "Dashain Event",
       details: "Details about the upcoming event 1. Date, time, and location.",
       date: "2023-12-01",
@@ -32,6 +33,7 @@ const Home = () => {
       location: "Jakobstad",
     },
     {
+      id: 2,
       title: "Tihar Event",
       details: "Details about the upcoming event 2. Date, time, and location.",
       date: "2023-12-15",
