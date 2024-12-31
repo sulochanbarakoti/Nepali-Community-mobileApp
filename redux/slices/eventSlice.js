@@ -1,17 +1,32 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getEvents } from "../../lib/appwrite";
+
+export const fetchEvents = createAsyncThunk("event/fetchEvents", async () => {
+  return await getEvents();
+});
 
 const eventSlice = createSlice({
   name: "event",
   initialState: {
-    tickets: [],
+    events: [],
+    status: "idle",
+    error: null,
   },
-  reducers: {
-    buyTicket: (state, action) => {
-      console.log("Ticket bought:", action.payload);
-      state.tickets.push(action.payload);
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchEvents.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchEvents.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.events = action.payload;
+      })
+      .addCase(fetchEvents.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
   },
 });
 
-export const { buyTicket } = eventSlice.actions;
 export default eventSlice.reducer;

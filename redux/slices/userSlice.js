@@ -54,12 +54,10 @@ const userSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        console.log("User logged in:", action.payload);
         state.isLoggedIn = true;
         state.user = action.payload;
       })
       .addCase(loginUser.rejected, (state, action) => {
-        console.log("Login failed:", action.payload);
         state.isLoggedIn = false;
         state.error = action.payload;
       })

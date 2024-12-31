@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchUser } from "../../redux/slices/userSlice";
+import { fetchEvents } from "../../redux/slices/eventSlice";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import images from "../../constants/images";
 import { StatusBar } from "expo-status-bar";
@@ -11,9 +12,11 @@ import { useRouter } from "expo-router";
 const Home = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const { events, status, error } = useSelector((state) => state.event);
 
   useEffect(() => {
     dispatch(fetchUser());
+    dispatch(fetchEvents());
   }, [dispatch]);
 
   const handleViewDetails = (event) => {
@@ -23,24 +26,40 @@ const Home = () => {
     });
   };
 
-  const events = [
-    {
-      id: 1,
-      title: "Dashain Event",
-      details: "Details about the upcoming event 1. Date, time, and location.",
-      date: "2023-12-01",
-      time: "10:00 AM",
-      location: "Jakobstad",
-    },
-    {
-      id: 2,
-      title: "Tihar Event",
-      details: "Details about the upcoming event 2. Date, time, and location.",
-      date: "2023-12-15",
-      time: "2:00 PM",
-      location: "Jakobstad",
-    },
-  ];
+  const eventsDetails = () => {
+    switch (status) {
+      case "loading":
+        return <Text>Loading...</Text>;
+      case "failed":
+        return <Text>{error}</Text>;
+      default:
+        return (
+          <Text>
+            {events
+              .filter((event) => event.eventActive)
+              .map((event, index) => (
+                <View
+                  key={index}
+                  className="bg-gray-200 p-3 rounded-md shadow-lg space-y-2 mt-4"
+                >
+                  <Text className="text-base font-semibold">
+                    {event.eventTitle}
+                  </Text>
+                  <Text numberOfLines={2}>{event.eventDescription}</Text>
+                  <Text>Date: {event.eventDate}</Text>
+                  <TouchableOpacity
+                    className="p-2 border-2 border-secondary rounded-md self-start"
+                    onPress={() => handleViewDetails(event)}
+                  >
+                    <Text>View Details</Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            ;
+          </Text>
+        );
+    }
+  };
 
   return (
     <SafeAreaView className="h-full bg-primary">
@@ -127,21 +146,7 @@ const Home = () => {
             <Text className="text-black text-lg font-bold mb-0">
               Coming Events
             </Text>
-            {events.map((event, index) => (
-              <View
-                key={index}
-                className="bg-gray-200 p-3 rounded-md shadow-lg space-y-2 mt-4"
-              >
-                <Text className="text-base font-semibold">{event.title}</Text>
-                <Text>{event.details}</Text>
-                <TouchableOpacity
-                  className="p-2 border-2 border-secondary rounded-md self-start"
-                  onPress={() => handleViewDetails(event)}
-                >
-                  <Text>View Details</Text>
-                </TouchableOpacity>
-              </View>
-            ))}
+            {eventsDetails()}
           </View>
         </View>
       </ScrollView>

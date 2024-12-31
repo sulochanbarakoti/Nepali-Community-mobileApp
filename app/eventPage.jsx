@@ -23,6 +23,7 @@ const EventPage = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
 
+  console.log(eventDetails);
   const handleBuyTicket = () => {
     if (user) {
       const ticketInfo = {
@@ -33,7 +34,7 @@ const EventPage = () => {
         eventDate: eventDetails.date,
         eventLocation: eventDetails.location,
       };
-      dispatch(buyTicket(ticketInfo));
+      // dispatch(buyTicket(ticketInfo));
       // setQrValue(JSON.stringify(ticketInfo));
       Alert.alert("Success", "Ticket purchased successfully!");
       // Redirect("home");
@@ -63,12 +64,14 @@ const EventPage = () => {
             className="w-full h-64 rounded-md"
             resizeMode="cover"
           />
-          <Text className="text-2xl font-bold mt-4">{eventDetails.title}</Text>
-          <Text className="text-lg mt-2">{eventDetails.details}</Text>
-          <Text className="text-lg mt-2">Date: {eventDetails.date}</Text>
-          <Text className="text-lg mt-2">Time: {eventDetails.time}</Text>
+          <Text className="text-2xl font-bold mt-4">
+            {eventDetails.eventTitle}
+          </Text>
+          <Text className="text-lg mt-2">{eventDetails.eventDescription}</Text>
+          <Text className="text-lg mt-2">Date: {eventDetails.eventDate}</Text>
+          <Text className="text-lg mt-2">Time: {eventDetails.eventDate}</Text>
           <Text className="text-lg mt-2">
-            Location: {eventDetails.location}
+            Location: {eventDetails.eventLocation}
           </Text>
           <View className="mt-4">
             <Text className="text-lg">Number of Tickets:</Text>
