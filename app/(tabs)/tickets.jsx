@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 const Tickets = () => {
   const [activeTab, setActiveTab] = useState("active");
-  const { tickets } = useSelector((state) => state.event);
+  const { tickets } = useSelector((state) => state.ticket);
 
   const activeTickets = tickets.filter(
     (ticket) => new Date(ticket.eventDate) >= new Date()
