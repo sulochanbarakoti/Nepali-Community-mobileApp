@@ -61,8 +61,8 @@ const Home = () => {
   };
 
   return (
-    <SafeAreaView className="h-full bg-primary">
-      <View className="h-[15vh] justify-center items-center">
+    <SafeAreaView className="h-full ">
+      <View className="h-[15vh] bg-primary justify-center items-center">
         <Image
           source={images.pngLogo}
           className="h-20 w-22"
@@ -149,7 +149,7 @@ const Home = () => {
           </View>
         </View>
       </ScrollView>
-      <StatusBar style="light" />
+      <StatusBar style="auto" />
     </SafeAreaView>
   );
 };
