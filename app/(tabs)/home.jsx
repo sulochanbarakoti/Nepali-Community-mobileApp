@@ -34,13 +34,13 @@ const Home = () => {
         return <Text>{error}</Text>;
       default:
         return (
-          <Text>
+          <View className="space-y-5">
             {events
               .filter((event) => event.eventActive)
               .map((event, index) => (
                 <View
                   key={index}
-                  className="bg-gray-200 p-3 rounded-md shadow-lg space-y-2 mt-4"
+                  className="bg-gray-200 p-3 rounded-md shadow-lg space-y-2 pb-5"
                 >
                   <Text className="text-base font-semibold">
                     {event.eventTitle}
@@ -55,8 +55,7 @@ const Home = () => {
                   </TouchableOpacity>
                 </View>
               ))}
-            ;
-          </Text>
+          </View>
         );
     }
   };
@@ -143,7 +142,7 @@ const Home = () => {
 
           {/* Coming Events Section */}
           <View className="bg-gray-100 px-3 py-5 mt-5">
-            <Text className="text-black text-lg font-bold mb-0">
+            <Text className="text-black text-lg font-bold mb-5">
               Coming Events
             </Text>
             {eventsDetails()}
