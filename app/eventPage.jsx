@@ -55,7 +55,7 @@ const EventPage = () => {
 
   return (
     <ScrollView>
-      <SafeAreaView className="h-full p-4">
+      <SafeAreaView>
         <View className="bg-white p-4 rounded-md shadow-lg">
           <Image
             source={{
