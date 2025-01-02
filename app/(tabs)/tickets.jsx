@@ -42,18 +42,22 @@ const Tickets = () => {
   );
 
   return (
-    <SafeAreaView className="h-full">
-      <View className="flex-row justify-around bg-gray-200 p-2">
+    <SafeAreaView className="h-full px-5">
+      <View className="flex-row justify-around bg-white p-2">
         <TouchableOpacity onPress={() => setActiveTab("active")}>
           <Text
-            className={`text-lg ${activeTab === "active" ? "font-bold" : ""}`}
+            className={`text-lg ${
+              activeTab === "active" ? "font-bold underline" : ""
+            }`}
           >
             Active Tickets
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setActiveTab("expired")}>
           <Text
-            className={`text-lg ${activeTab === "expired" ? "font-bold" : ""}`}
+            className={`text-lg ${
+              activeTab === "expired" ? "font-bold underline" : ""
+            }`}
           >
             Expired Tickets
           </Text>

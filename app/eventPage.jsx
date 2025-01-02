@@ -12,8 +12,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 // import QRCode from "react-native-qrcode-svg";
 import { useDispatch, useSelector } from "react-redux";
-import { buyTicket } from "../redux/slices/eventSlice";
 import { useLocalSearchParams } from "expo-router";
+import { storeTicket } from "../redux/slices/ticketSlice";
 
 const EventPage = () => {
   const { event } = useLocalSearchParams();
@@ -23,20 +23,16 @@ const EventPage = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
 
-  console.log(eventDetails);
   const handleBuyTicket = () => {
     if (user) {
       const ticketInfo = {
-        eventId: eventDetails.id,
+        eventId: eventDetails.$id,
         userId: user.$id,
-        ticketCount,
-        eventTitle: eventDetails.title,
-        eventDate: eventDetails.date,
-        eventLocation: eventDetails.location,
+        boughtDate: new Date().toISOString(),
       };
-      // dispatch(buyTicket(ticketInfo));
+      dispatch(storeTicket(ticketInfo));
       // setQrValue(JSON.stringify(ticketInfo));
-      Alert.alert("Success", "Ticket purchased successfully!");
+      // Alert.alert("Success", "Ticket purchased successfully!");
       // Redirect("home");
     } else {
       Alert.alert("Error", "You need to be logged in to buy tickets.");

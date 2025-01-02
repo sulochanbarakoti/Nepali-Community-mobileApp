@@ -1,23 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createTicket } from "../../lib/appwrite";
 
 // Async thunk to store the ticket in the database
 export const storeTicket = createAsyncThunk(
   "ticket/storeTicket",
-  async (ticketInfo) => {
-    const response = await fetch("https://api.example.com/buy-ticket", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(ticketInfo),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to buy ticket");
+  async (ticketInfo, { rejectWithValue }) => {
+    try {
+      const response = await createTicket(ticketInfo);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
-
-    const data = await response.json();
-    return data;
   }
 );
 
