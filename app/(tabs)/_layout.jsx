@@ -75,7 +75,6 @@ const TabsLayout = () => {
         name="tickets"
         options={{
           headerShown: true,
-          headerBackTitleVisible: false,
           title: "Tickets",
           tabBarIcon: ({ focused }) => (
             <TabIcon name="Tickets" focused={focused} />

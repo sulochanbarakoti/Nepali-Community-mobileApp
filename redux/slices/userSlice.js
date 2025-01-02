@@ -10,7 +10,6 @@ export const loginUser = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const user = await signInUser(credentials.email, credentials.password);
-      console.log("User logged in:", user);
       return user;
     } catch (error) {
       return rejectWithValue(error.message);

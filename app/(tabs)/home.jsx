@@ -47,6 +47,9 @@ const Home = () => {
                   </Text>
                   <Text numberOfLines={2}>{event.eventDescription}</Text>
                   <Text>Date: {event.eventDate}</Text>
+                  <Text className="text-green-500">
+                    Sold Tickets: {event.soldTickets}
+                  </Text>
                   <TouchableOpacity
                     className="p-2 border-2 border-secondary rounded-md self-start"
                     onPress={() => handleViewDetails(event)}
@@ -142,9 +145,15 @@ const Home = () => {
 
           {/* Coming Events Section */}
           <View className="bg-gray-100 px-3 py-5 mt-5">
-            <Text className="text-black text-lg font-bold mb-5">
-              Coming Events
-            </Text>
+            <View className="flex-row justify-between items-center mb-5">
+              <Text className="text-black text-lg font-bold">Events</Text>
+              <TouchableOpacity
+                className="p-2 border-2 border-secondary rounded-md self-end"
+                onPress={() => router.push({ pathname: "createEvent" })}
+              >
+                <Text>Create Event</Text>
+              </TouchableOpacity>
+            </View>
             {eventsDetails()}
           </View>
         </View>
