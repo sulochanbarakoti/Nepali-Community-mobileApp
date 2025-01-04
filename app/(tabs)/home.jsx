@@ -8,6 +8,7 @@ import images from "../../constants/images";
 import { StatusBar } from "expo-status-bar";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useRouter } from "expo-router";
+import { getAllTickets } from "../../redux/slices/ticketSlice";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const Home = () => {
   useEffect(() => {
     dispatch(fetchUser());
     dispatch(fetchEvents());
+    dispatch(getAllTickets());
   }, [dispatch]);
 
   const handleViewDetails = (event) => {

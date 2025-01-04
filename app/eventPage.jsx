@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -12,10 +12,9 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { router, useLocalSearchParams } from "expo-router";
-import { storeTicket } from "../redux/slices/ticketSlice";
+import { getAllTickets, storeTicket } from "../redux/slices/ticketSlice";
 import { updateSoldTicket } from "../redux/slices/eventSlice";
 import { useRouter } from "expo-router";
-import { Filter } from "react-native-svg";
 
 const EventPage = () => {
   const { event } = useLocalSearchParams();
@@ -25,6 +24,10 @@ const EventPage = () => {
   const { tickets } = useSelector((state) => state.ticket);
   const router = useRouter();
 
+  useEffect(() => {
+    dispatch(getAllTickets());
+  }, [dispatch]);
+
   const handleBuyTicket = () => {
     if (user) {
       const ticketInfo = {
@@ -32,18 +35,21 @@ const EventPage = () => {
         userId: user.$id,
         boughtDate: new Date().toISOString(),
       };
+      console.log(eventDetails.$id);
+      console.log(tickets[0].user.$id);
       const response = tickets.filter(
         (ticket) =>
-          ticket.eventId === eventDetails.$id && ticket.user === user.$id
+          ticket.eventId === eventDetails.$id && ticket.user.$id === user.$id
       );
       console.log(response);
-      if (response) {
+      if (response.length > 0) {
         Alert.alert(
           "Error",
           "You have already purchased a ticket for this event."
         );
         return;
       }
+
       dispatch(storeTicket(ticketInfo));
       dispatch(updateSoldTicket(eventDetails));
       Alert.alert("Success", "Ticket purchased successfully!");

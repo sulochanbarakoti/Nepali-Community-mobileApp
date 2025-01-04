@@ -12,13 +12,19 @@ const Tickets = () => {
   const dispatch = useDispatch();
   const { tickets } = useSelector((state) => state.ticket);
   const { events } = useSelector((state) => state.event);
+  const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getAllTickets());
   }, [dispatch]);
 
+  const filterTickets = (tickets) => {
+    return tickets.filter((ticket) => ticket.user.$id === user.$id);
+  };
+
   const findEvent = (eventId) => {
-    return events.find((event) => event.$id === eventId);
+    const response = events.find((event) => event.$id === eventId);
+    return response;
   };
 
   // console.log(tickets);
@@ -110,8 +116,8 @@ const Tickets = () => {
         </TouchableOpacity>
       </View>
       {activeTab === "active"
-        ? renderTickets(tickets, true)
-        : renderTickets(tickets, false)}
+        ? renderTickets(filterTickets(tickets), true)
+        : renderTickets(filterTickets(tickets), false)}
     </SafeAreaView>
   );
 };
