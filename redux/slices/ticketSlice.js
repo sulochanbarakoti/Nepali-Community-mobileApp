@@ -43,6 +43,7 @@ const ticketSlice = createSlice({
       })
       .addCase(storeTicket.fulfilled, (state, action) => {
         state.status = "succeeded";
+        console.log(action.payload);
         state.tickets.push(action.payload);
       })
       .addCase(storeTicket.rejected, (state, action) => {

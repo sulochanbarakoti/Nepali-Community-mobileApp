@@ -21,7 +21,7 @@ const Tickets = () => {
     return events.find((event) => event.$id === eventId);
   };
 
-  console.log(tickets);
+  // console.log(tickets);
   // console.log(events);
   const activeTickets = tickets.filter(
     (ticket) => new Date(tickets.eventDate) >= new Date()

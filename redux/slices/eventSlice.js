@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getEvents } from "../../lib/appwrite";
+import { getEvents, updateEvent } from "../../lib/appwrite";
 import { createEvent } from "../../lib/appwrite";
 
 export const fetchEvents = createAsyncThunk("event/fetchEvents", async () => {
@@ -11,6 +11,18 @@ export const createNewEvent = createAsyncThunk(
   async (eventData, { rejectWithValue }) => {
     try {
       const response = await createEvent(eventData);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updateSoldTicket = createAsyncThunk(
+  "event/updateEvent",
+  async (eventData, { rejectWithValue }) => {
+    try {
+      const response = await updateEvent(eventData);
       return response;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -41,6 +53,9 @@ const eventSlice = createSlice({
       })
       .addCase(createNewEvent.fulfilled, (state, action) => {
         state.events.push(action.payload);
+      })
+      .addCase(updateSoldTicket.fulfilled, (state, action) => {
+        state.events = action.payload;
       });
   },
 });
