@@ -32,7 +32,7 @@ const EventPage = () => {
       };
       dispatch(storeTicket(ticketInfo));
       // setQrValue(JSON.stringify(ticketInfo));
-      // Alert.alert("Success", "Ticket purchased successfully!");
+      Alert.alert("Success", "Ticket purchased successfully!");
       // Redirect("home");
     } else {
       Alert.alert("Error", "You need to be logged in to buy tickets.");

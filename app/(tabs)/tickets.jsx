@@ -1,18 +1,33 @@
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import QRCode from "react-native-qrcode-svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllTickets } from "../../redux/slices/ticketSlice";
 
 const Tickets = () => {
   const [activeTab, setActiveTab] = useState("active");
-  const { tickets } = useSelector((state) => state.ticket);
+  const [showQR, setShowQR] = useState(false);
 
+  const dispatch = useDispatch();
+  const { tickets } = useSelector((state) => state.ticket);
+  const { events } = useSelector((state) => state.event);
+
+  useEffect(() => {
+    dispatch(getAllTickets());
+  }, [dispatch]);
+
+  const findEvent = (eventId) => {
+    return events.find((event) => event.$id === eventId);
+  };
+
+  console.log(tickets);
+  // console.log(events);
   const activeTickets = tickets.filter(
-    (ticket) => new Date(ticket.eventDate) >= new Date()
+    (ticket) => new Date(tickets.eventDate) >= new Date()
   );
   const expiredTickets = tickets.filter(
-    (ticket) => new Date(ticket.eventDate) < new Date()
+    (ticket) => new Date(tickets.eventDate) < new Date()
   );
 
   const renderTickets = (tickets, isActive) => (
@@ -20,17 +35,48 @@ const Tickets = () => {
       {tickets.length > 0 ? (
         tickets.map((ticket, index) => (
           <View key={index} className="bg-white p-4 rounded-md shadow-lg mb-4">
-            <Text className="text-xl font-bold">{ticket.eventTitle}</Text>
-            <Text className="text-lg">Date: {ticket.eventDate}</Text>
-            <Text className="text-lg">Location: {ticket.eventLocation}</Text>
-            <View className="mt-4 justify-center items-center">
-              <QRCode value={JSON.stringify(ticket)} size={150} />
-              <Text className="mt-2">
-                {isActive
-                  ? "Scan this QR code at the event"
-                  : "This ticket has expired"}
-              </Text>
+            <View key={index} className="flex-row justify-between">
+              <View>
+                <Text className="text-xl font-bold">
+                  {findEvent(ticket.eventId).eventTitle}
+                </Text>
+                <Text className="text-lg">
+                  Date: {findEvent(ticket.eventId).eventDate}
+                </Text>
+                <Text className="text-lg">
+                  Location: {findEvent(ticket.eventId).eventLocation}
+                </Text>
+              </View>
+              <View className="justify-center items-center">
+                <TouchableOpacity
+                  className="bg-gray-300 p-2 rounded-md"
+                  onPress={() =>
+                    setShowQR(showQR === ticket.$id ? null : ticket.$id)
+                  }
+                  disabled={ticket.scanned}
+                >
+                  <Text className="font-bold">QR Code</Text>
+                  <Text>Show QR</Text>
+                </TouchableOpacity>
+              </View>
             </View>
+            {showQR === ticket.$id ? (
+              <View className="mt-4 justify-center items-center">
+                {isActive ? (
+                  <QRCode
+                    value={JSON.stringify(
+                      ticket.$id + ticket.eventId + ticket.boughtDate
+                    )}
+                    size={100}
+                  />
+                ) : null}
+                <Text className="mt-2">
+                  {isActive
+                    ? "Scan this QR code at the event"
+                    : "This ticket has expired"}
+                </Text>
+              </View>
+            ) : null}
           </View>
         ))
       ) : (
@@ -64,8 +110,8 @@ const Tickets = () => {
         </TouchableOpacity>
       </View>
       {activeTab === "active"
-        ? renderTickets(activeTickets, true)
-        : renderTickets(expiredTickets, false)}
+        ? renderTickets(tickets, true)
+        : renderTickets(tickets, false)}
     </SafeAreaView>
   );
 };

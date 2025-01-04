@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { createTicket } from "../../lib/appwrite";
+import { createTicket, getTickets, updateTicket } from "../../lib/appwrite";
 
 // Async thunk to store the ticket in the database
 export const storeTicket = createAsyncThunk(
@@ -11,6 +11,20 @@ export const storeTicket = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.message);
     }
+  }
+);
+
+// Slice to manage the ticket state
+export const getAllTickets = createAsyncThunk("ticket/getTickets", async () => {
+  const response = await getTickets();
+  return response;
+});
+
+export const scanTicket = createAsyncThunk(
+  "ticket/scanTicket",
+  async (ticketId) => {
+    const response = await updateTicket(ticketId);
+    return response;
   }
 );
 
@@ -32,6 +46,28 @@ const ticketSlice = createSlice({
         state.tickets.push(action.payload);
       })
       .addCase(storeTicket.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(getAllTickets.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getAllTickets.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.tickets = action.payload;
+      })
+      .addCase(getAllTickets.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(scanTicket.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(scanTicket.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.tickets = action.payload;
+      })
+      .addCase(scanTicket.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });
