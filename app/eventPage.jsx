@@ -35,8 +35,8 @@ const EventPage = () => {
         userId: user.$id,
         boughtDate: new Date().toISOString(),
       };
-      console.log(eventDetails.$id);
-      console.log(tickets[0].user.$id);
+      // console.log(eventDetails.$id);
+      // console.log(tickets[0].user.$id);
       const response = tickets.filter(
         (ticket) =>
           ticket.eventId === eventDetails.$id && ticket.user.$id === user.$id

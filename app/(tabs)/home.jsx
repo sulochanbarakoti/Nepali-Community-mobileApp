@@ -14,11 +14,15 @@ const Home = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { events, status, error } = useSelector((state) => state.event);
+  const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(fetchUser());
     dispatch(fetchEvents());
     dispatch(getAllTickets());
+    {
+      user && router.push({ pathname: "signIn" });
+    }
   }, [dispatch]);
 
   const handleViewDetails = (event) => {
@@ -66,7 +70,7 @@ const Home = () => {
   };
 
   return (
-    <SafeAreaView className="h-full ">
+    <SafeAreaView className="h-[100vh]">
       <View className="h-[15vh] bg-primary justify-center items-center">
         <Image
           source={images.pngLogo}
@@ -77,7 +81,7 @@ const Home = () => {
           Nepali Community Group, Jakobstad
         </Text>
       </View>
-      <ScrollView>
+      <ScrollView className="h-[85vh]">
         <View className="bg-gray-200 py-2">
           <ScrollView
             horizontal={true}
@@ -146,15 +150,18 @@ const Home = () => {
           </View>
 
           {/* Coming Events Section */}
-          <View className="bg-gray-100 px-3 py-5 mt-5">
+          <View className="bg-gray-100 px-3 py-5 mt-5 mb-8">
             <View className="flex-row justify-between items-center mb-5">
               <Text className="text-black text-lg font-bold">Events</Text>
-              <TouchableOpacity
-                className="p-2 border-2 border-secondary rounded-md self-end"
-                onPress={() => router.push({ pathname: "createEvent" })}
-              >
-                <Text>Create Event</Text>
-              </TouchableOpacity>
+              {/* Create Event Button */}
+              {user.isAdmin && (
+                <TouchableOpacity
+                  className="p-2 border-2 border-secondary rounded-md self-end"
+                  onPress={() => router.push({ pathname: "createEvent" })}
+                >
+                  <Text>Create Event</Text>
+                </TouchableOpacity>
+              )}
             </View>
             {eventsDetails()}
           </View>

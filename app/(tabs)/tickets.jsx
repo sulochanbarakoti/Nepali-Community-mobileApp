@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import QRCode from "react-native-qrcode-svg";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllTickets } from "../../redux/slices/ticketSlice";
+import QRScanner from "../qrScanner";
 
 const Tickets = () => {
   const [activeTab, setActiveTab] = useState("active");
@@ -11,8 +12,10 @@ const Tickets = () => {
 
   const dispatch = useDispatch();
   const { tickets } = useSelector((state) => state.ticket);
-  const { events } = useSelector((state) => state.event);
+
   const { user } = useSelector((state) => state.user);
+
+  console.log(user);
 
   useEffect(() => {
     dispatch(getAllTickets());
@@ -23,6 +26,7 @@ const Tickets = () => {
   };
 
   const findEvent = (eventId) => {
+    const { events } = useSelector((state) => state.event);
     const response = events.find((event) => event.$id === eventId);
     return response;
   };
@@ -94,31 +98,37 @@ const Tickets = () => {
   );
 
   return (
-    <SafeAreaView className="h-full px-5">
-      <View className="flex-row justify-around bg-white p-2">
-        <TouchableOpacity onPress={() => setActiveTab("active")}>
-          <Text
-            className={`text-lg ${
-              activeTab === "active" ? "font-bold underline" : ""
-            }`}
-          >
-            Active Tickets
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setActiveTab("expired")}>
-          <Text
-            className={`text-lg ${
-              activeTab === "expired" ? "font-bold underline" : ""
-            }`}
-          >
-            Expired Tickets
-          </Text>
-        </TouchableOpacity>
-      </View>
-      {activeTab === "active"
-        ? renderTickets(filterTickets(tickets), true)
-        : renderTickets(filterTickets(tickets), false)}
-    </SafeAreaView>
+    <>
+      {!user.isAdmin ? (
+        <SafeAreaView className="h-full px-5">
+          <View className="flex-row justify-around bg-white p-2">
+            <TouchableOpacity onPress={() => setActiveTab("active")}>
+              <Text
+                className={`text-lg ${
+                  activeTab === "active" ? "font-bold underline" : ""
+                }`}
+              >
+                Active Tickets
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setActiveTab("expired")}>
+              <Text
+                className={`text-lg ${
+                  activeTab === "expired" ? "font-bold underline" : ""
+                }`}
+              >
+                Expired Tickets
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {activeTab === "active"
+            ? renderTickets(filterTickets(tickets), true)
+            : renderTickets(filterTickets(tickets), false)}
+        </SafeAreaView>
+      ) : (
+        <QRScanner />
+      )}
+    </>
   );
 };
 

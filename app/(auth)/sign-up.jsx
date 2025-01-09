@@ -5,7 +5,7 @@ import FormField from "../../components/formField";
 import images from "../../constants/images";
 import CustomButton from "../../components/customButton";
 import { AntDesign } from "@expo/vector-icons";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { createUser } from "../../lib/appwrite";
 
 const SignUp = () => {
@@ -19,7 +19,11 @@ const SignUp = () => {
           form.email,
           form.password
         );
-        console.log(result);
+        if (result.error) {
+          Alert.alert("Error", result.error.message);
+          return;
+        }
+        router.push("home");
       } catch (error) {
         throw new Error(error);
       }

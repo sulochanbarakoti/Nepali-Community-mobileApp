@@ -26,6 +26,9 @@ const SignIn = () => {
 
   useEffect(() => {
     dispatch(fetchUser());
+    if (isLoggedIn) {
+      router.push("home");
+    }
   }, [dispatch]);
 
   if (isLoading) {

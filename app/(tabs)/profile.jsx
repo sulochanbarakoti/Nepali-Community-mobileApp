@@ -6,7 +6,7 @@ import {
   MaterialCommunityIcons,
   Ionicons,
 } from "@expo/vector-icons";
-import { Redirect } from "expo-router";
+import { Link, Redirect, router } from "expo-router";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../redux/slices/userSlice";
 
@@ -16,8 +16,9 @@ const Profile = () => {
 
   if (!isLoggedIn) return <Redirect href="sign-in" />;
 
-  const LogOut = async () => {
+  const LogOut = () => {
     dispatch(logoutUser());
+    // router.push("sign-in");
   };
 
   return (
@@ -58,9 +59,11 @@ const Profile = () => {
                 </TouchableOpacity>
                 <TouchableOpacity className="flex-row items-center space-x-3">
                   <AntDesign name="logout" size={24} color="black" />
-                  <Text className="text-lg" onPress={LogOut}>
-                    Log Out
-                  </Text>
+                  <Link href="sign-in">
+                    <Text className="text-lg" onPress={LogOut}>
+                      Log Out
+                    </Text>
+                  </Link>
                 </TouchableOpacity>
               </View>
             </View>
