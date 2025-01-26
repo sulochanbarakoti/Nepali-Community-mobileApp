@@ -18,7 +18,6 @@ const Profile = () => {
 
   const LogOut = () => {
     dispatch(logoutUser());
-    return <Redirect href="sign-in" />;
   };
 
   return (

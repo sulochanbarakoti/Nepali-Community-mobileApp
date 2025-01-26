@@ -15,8 +15,6 @@ const Tickets = () => {
 
   const { user } = useSelector((state) => state.user);
 
-  console.log(user);
-
   useEffect(() => {
     dispatch(getAllTickets());
   }, [dispatch]);
@@ -31,8 +29,6 @@ const Tickets = () => {
     return response;
   };
 
-  // console.log(tickets);
-  // console.log(events);
   const activeTickets = tickets.filter(
     (ticket) => new Date(tickets.eventDate) >= new Date()
   );
@@ -99,7 +95,7 @@ const Tickets = () => {
 
   return (
     <>
-      {!user.isAdmin ? (
+      {!user?.isAdmin ? (
         <SafeAreaView className="h-full px-5">
           <View className="flex-row justify-around bg-white p-2">
             <TouchableOpacity onPress={() => setActiveTab("active")}>

@@ -38,8 +38,8 @@ const TabIcon = ({ name, focused }) => {
       break;
     case "Scan":
       icon = (
-        <Ionicons
-          name={focused ? "scan-outline" : "scan-sharp"}
+        <MaterialCommunityIcons
+          name={focused ? "scan-helper" : "qrcode-scan"}
           size={24}
           color={color}
         />
@@ -50,15 +50,17 @@ const TabIcon = ({ name, focused }) => {
   }
 
   return (
-    <View className="items-center">
+    <View className="flex  items-center">
       <View className="mt-1">{icon}</View>
-      <Text
-        className={`text-xs mt-1 w-full ${
-          focused ? "text-white font-bold" : "text-gray-400"
-        }`}
-      >
-        {name}
-      </Text>
+      <View>
+        <Text
+          className={`text-xs mt-1 w-full ${
+            focused ? "text-white font-bold" : "text-gray-400"
+          }`}
+        >
+          {name}
+        </Text>
+      </View>
     </View>
   );
 };
@@ -72,16 +74,17 @@ const TabsLayout = () => {
         tabBarStyle: {
           backgroundColor: "#1d161e",
           height: Platform.OS === "android" ? 60 : 75,
-          paddingBottom: Platform.OS === "android" ? 5 : 10,
-          paddingTop: Platform.OS === "android" ? 15 : 0,
+          paddingBottom: Platform.OS === "android" ? 5 : 8,
+          paddingBottom: 8,
+          paddingTop: 15,
         },
       }}
     >
       <Tabs.Screen
         name="home"
         options={{
-          headerShown: false,
           title: "Home",
+          headerShown: false,
           tabBarIcon: ({ focused }) => (
             <TabIcon name="Home" focused={focused} />
           ),
@@ -91,8 +94,8 @@ const TabsLayout = () => {
       <Tabs.Screen
         name="tickets"
         options={{
-          headerShown: false,
           title: "Tickets",
+          headerShown: false,
           tabBarIcon: ({ focused }) => (
             <TabIcon
               name={`${user?.isAdmin ? "Scan" : "Tickets"}`}
@@ -104,8 +107,8 @@ const TabsLayout = () => {
       <Tabs.Screen
         name="profile"
         options={{
-          headerShown: false,
           title: "Profile",
+          headerShown: false,
           tabBarIcon: ({ focused }) => (
             <TabIcon name="Profile" focused={focused} />
           ),
