@@ -8,35 +8,40 @@ import QRScanner from "../qrScanner";
 
 const Tickets = () => {
   const [activeTab, setActiveTab] = useState("active");
-  const [showQR, setShowQR] = useState(false);
+  const [showQR, setShowQR] = useState(null);
 
   const dispatch = useDispatch();
   const { tickets } = useSelector((state) => state.ticket);
 
   const { user } = useSelector((state) => state.user);
 
+  const { events } = useSelector((state) => state.event);
   useEffect(() => {
     dispatch(getAllTickets());
   }, [dispatch]);
 
   const filterTickets = (tickets) => {
-    return tickets.filter((ticket) => ticket.user.$id === user.$id);
+    return tickets.filter((ticket) => ticket.user?.$id === user.$id);
   };
 
   const findEvent = (eventId) => {
-    const { events } = useSelector((state) => state.event);
-    const response = events.find((event) => event.$id === eventId);
-    return response;
+    return events.find((event) => event.$id === eventId);
   };
 
-  const activeTickets = tickets.filter(
-    (ticket) => new Date(tickets.eventDate) >= new Date()
-  );
-  const expiredTickets = tickets.filter(
-    (ticket) => new Date(tickets.eventDate) < new Date()
-  );
+  const activeTickets = (tickets) => {
+    return tickets.filter(
+      // (ticket) => new Date(tickets.eventDate) >= new Date()
+      (ticket) => ticket.scanned === false && ticket.expired === false
+    );
+  };
+  const expiredTickets = (tickets) => {
+    return tickets.filter(
+      // (ticket) => new Date(tickets.eventDate) < new Date()
+      (ticket) => ticket.scanned === true && ticket.expired === true
+    );
+  };
 
-  const renderTickets = (tickets, isActive) => (
+  const renderTickets = (tickets) => (
     <ScrollView className="p-4">
       {tickets.length > 0 ? (
         tickets.map((ticket, index) => (
@@ -68,19 +73,8 @@ const Tickets = () => {
             </View>
             {showQR === ticket.$id ? (
               <View className="mt-4 justify-center items-center">
-                {isActive ? (
-                  <QRCode
-                    value={JSON.stringify(
-                      ticket.$id + ticket.eventId + ticket.boughtDate
-                    )}
-                    size={100}
-                  />
-                ) : null}
-                <Text className="mt-2">
-                  {isActive
-                    ? "Scan this QR code at the event"
-                    : "This ticket has expired"}
-                </Text>
+                <QRCode value={JSON.stringify(ticket.$id)} size={100} />
+                <Text className="mt-2">Scan this QR code at the event</Text>
               </View>
             ) : null}
           </View>
@@ -118,8 +112,8 @@ const Tickets = () => {
             </TouchableOpacity>
           </View>
           {activeTab === "active"
-            ? renderTickets(filterTickets(tickets), true)
-            : renderTickets(filterTickets(tickets), false)}
+            ? renderTickets(filterTickets(activeTickets(tickets)))
+            : renderTickets(filterTickets(expiredTickets(tickets)))}
         </SafeAreaView>
       ) : (
         <QRScanner />

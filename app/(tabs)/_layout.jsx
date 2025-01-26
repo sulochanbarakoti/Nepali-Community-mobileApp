@@ -75,7 +75,6 @@ const TabsLayout = () => {
           backgroundColor: "#1d161e",
           height: Platform.OS === "android" ? 60 : 75,
           paddingBottom: Platform.OS === "android" ? 5 : 8,
-          paddingBottom: 8,
           paddingTop: 15,
         },
       }}
