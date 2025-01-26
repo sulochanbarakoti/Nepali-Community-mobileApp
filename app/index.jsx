@@ -25,8 +25,6 @@ export default function App() {
 
   if (isLoggedIn) return <Redirect href="home" />;
 
-  console.log(user, isLoggedIn);
-
   return (
     <SafeAreaView className="h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>

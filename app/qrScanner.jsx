@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Alert, TouchableOpacity } from "react-native";
-import { Camera } from "expo-camera";
+// import { Camera } from "expo-camera";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { markTicketAsUsed } from "../redux/slices/ticketSlice"; // Ensure you have this action in your ticket slice

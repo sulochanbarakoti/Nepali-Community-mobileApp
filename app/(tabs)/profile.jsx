@@ -6,7 +6,7 @@ import {
   MaterialCommunityIcons,
   Ionicons,
 } from "@expo/vector-icons";
-import { Link, Redirect, router } from "expo-router";
+import { Link, Redirect } from "expo-router";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../redux/slices/userSlice";
 
@@ -18,7 +18,7 @@ const Profile = () => {
 
   const LogOut = () => {
     dispatch(logoutUser());
-    // router.push("sign-in");
+    return <Redirect href="sign-in" />;
   };
 
   return (

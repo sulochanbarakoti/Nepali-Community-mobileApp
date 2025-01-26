@@ -20,26 +20,21 @@ const SignIn = () => {
   const [form, setForm] = useState({ email: "", password: "" });
 
   const dispatch = useDispatch();
-  const { user, isLoggedIn, isLoading, error } = useSelector(
-    (state) => state.user
-  );
+  const { isLoggedIn, isLoading, error } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(fetchUser());
-    if (isLoggedIn) {
-      router.push("home");
-    }
   }, [dispatch]);
+
+  if (isLoggedIn) return <Redirect href="home" />;
 
   if (isLoading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }
 
-  if (isLoggedIn) return <Redirect href="home" />;
-
   const submit = () => {
     dispatch(loginUser({ email: form.email, password: form.password }));
-    console.log(user, isLoggedIn);
+    if (isLoggedIn) return <Redirect href="home" />;
   };
 
   return (

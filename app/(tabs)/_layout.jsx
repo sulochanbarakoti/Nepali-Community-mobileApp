@@ -71,10 +71,9 @@ const TabsLayout = () => {
         tabBarShowLabel: false,
         tabBarStyle: {
           backgroundColor: "#1d161e",
-          height: Platform.OS === "android" ? 60 : 75, // Adjust height for Android
-          paddingBottom: Platform.OS === "android" ? 5 : 8, // Reduce Android padding
-          paddingBottom: 8,
-          paddingTop: 15,
+          height: Platform.OS === "android" ? 60 : 75,
+          paddingBottom: Platform.OS === "android" ? 5 : 10,
+          paddingTop: Platform.OS === "android" ? 15 : 0,
         },
       }}
     >
@@ -82,7 +81,7 @@ const TabsLayout = () => {
         name="home"
         options={{
           headerShown: false,
-          // title: "Home",
+          title: "Home",
           tabBarIcon: ({ focused }) => (
             <TabIcon name="Home" focused={focused} />
           ),
@@ -93,10 +92,10 @@ const TabsLayout = () => {
         name="tickets"
         options={{
           headerShown: false,
-          // title: "Tickets",
+          title: "Tickets",
           tabBarIcon: ({ focused }) => (
             <TabIcon
-              name={`${user.isAdmin ? "Scan" : "Tickets"}`}
+              name={`${user?.isAdmin ? "Scan" : "Tickets"}`}
               focused={focused}
             />
           ),
@@ -106,7 +105,7 @@ const TabsLayout = () => {
         name="profile"
         options={{
           headerShown: false,
-          // title: "Profile",
+          title: "Profile",
           tabBarIcon: ({ focused }) => (
             <TabIcon name="Profile" focused={focused} />
           ),

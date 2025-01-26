@@ -20,9 +20,6 @@ const Home = () => {
     dispatch(fetchUser());
     dispatch(fetchEvents());
     dispatch(getAllTickets());
-    {
-      user && router.push({ pathname: "signIn" });
-    }
   }, [dispatch]);
 
   const handleViewDetails = (event) => {
@@ -154,7 +151,7 @@ const Home = () => {
             <View className="flex-row justify-between items-center mb-5">
               <Text className="text-black text-lg font-bold">Events</Text>
               {/* Create Event Button */}
-              {user.isAdmin && (
+              {user?.isAdmin && (
                 <TouchableOpacity
                   className="p-2 border-2 border-secondary rounded-md self-end"
                   onPress={() => router.push({ pathname: "createEvent" })}
