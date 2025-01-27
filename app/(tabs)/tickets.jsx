@@ -37,7 +37,7 @@ const Tickets = () => {
   const expiredTickets = (tickets) => {
     return tickets.filter(
       // (ticket) => new Date(tickets.eventDate) < new Date()
-      (ticket) => ticket.scanned === true && ticket.expired === true
+      (ticket) => ticket.scanned === true || ticket.expired === true
     );
   };
 

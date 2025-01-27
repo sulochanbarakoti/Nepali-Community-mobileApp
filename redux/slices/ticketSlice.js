@@ -28,14 +28,6 @@ export const markTicketAsUsed = createAsyncThunk(
   }
 );
 
-// export const scanTicket = createAsyncThunk(
-//   "ticket/scanTicket",
-//   async (ticketId) => {
-//     const response = await updateTicket(ticketId, { scanned: true });
-//     return response;
-//   }
-// );
-
 const ticketSlice = createSlice({
   name: "ticket",
   initialState: {
@@ -69,17 +61,6 @@ const ticketSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       })
-      // .addCase(scanTicket.pending, (state) => {
-      //   state.status = "loading";
-      // })
-      // .addCase(scanTicket.fulfilled, (state, action) => {
-      //   state.status = "succeeded";
-      //   state.tickets = action.payload;
-      // })
-      // .addCase(scanTicket.rejected, (state, action) => {
-      //   state.status = "failed";
-      //   state.error = action.error.message;
-      // });
       .addCase(markTicketAsUsed.fulfilled, (state, action) => {
         const index = state.tickets.findIndex(
           (ticket) => ticket.$id === action.payload.$id

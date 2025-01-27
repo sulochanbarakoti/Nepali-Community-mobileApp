@@ -1,73 +1,64 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Alert, TouchableOpacity } from "react-native";
-import { CameraView, useCameraPermissions } from "expo-camera"; // Correct import
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { CameraView, Camera } from "expo-camera";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Redirect } from "expo-router";
-import { data } from "autoprefixer";
+import { useDispatch } from "react-redux";
+import { markTicketAsUsed } from "../redux/slices/ticketSlice";
 
-const QRScanner = () => {
-  const [permission, requestPermission] = useCameraPermissions();
+export default function QRScanner() {
+  const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
-  useEffect(() => {
-    if (permission?.status === "denied") {
-      Alert.alert("Camera permission denied", "Please grant camera access.");
-    }
-  }, [permission]);
+  const dispatch = useDispatch();
 
-  // Handle barcode scanning
-  const handleBarCodeScanned = ({ data }) => {
+  useEffect(() => {
+    const getCameraPermissions = async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
+    };
+
+    getCameraPermissions();
+  }, []);
+
+  const handleBarcodeScanned = ({ type, data }) => {
     setScanned(true);
-    Alert.alert("QR Code Scanned", `Data: ${data}`);
-    Redirect("home"); // Redirect to home page
+    dispatch(markTicketAsUsed(data));
+    console.log(`Barcode type: ${type}, data: ${data}`);
+    // Do something with the barcode data
   };
 
-  // Request permission if not granted yet
-  if (permission?.status === "undetermined") {
-    requestPermission();
+  if (hasPermission === null) {
+    return <Text>Requesting for camera permission</Text>;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
   }
 
   return (
-    <SafeAreaView className="flex-1 justify-center items-center bg-gray-100">
-      {permission?.granted === false ? (
-        <View className="flex-1 justify-center items-center">
-          <Text>No access to camera</Text>
-          <TouchableOpacity
-            className="bg-blue-500 p-2 rounded-lg mt-4"
-            onPress={requestPermission}
-          >
-            <Text className="text-white">Grant Permission</Text>
-          </TouchableOpacity>
+    // Camera view
+    <SafeAreaView className="flex-1 bg-gray-100">
+      <View className="flex-1">
+        <CameraView
+          onBarcodeScanned={scanned ? undefined : handleBarcodeScanned}
+          barcodeScannerSettings={{
+            barcodeTypes: ["qr", "pdf417"],
+          }}
+          style={StyleSheet.absoluteFillObject}
+        />
+        {/* QR code scanning overlay */}
+        <View className="absolute top-0 left-0 right-0 bottom-0 justify-center items-center">
+          <View className="w-64 h-64 border-4 border-white bg-opacity-50"></View>
         </View>
-      ) : (
-        <View className="w-11/12 h-3/4 rounded-lg">
-          {/* Use CameraView for barcode scanning */}
-          <CameraView
-            style={{ flex: 1 }} // Ensure the camera view fills the space
-            onBarCodeScanned={({ data }) => {
-              console.log(data);
-            }} // Scanning logic
-            // barCodeScannerSettings={{
-            //   // Add barcode scanner settings
-            //   barCodeTypes: ["qr"], // Specify QR codes to scan
-            // }}
-          />
-          {/* Overlay */}
-          <View className="absolute top-0 left-0 right-0 bottom-0 justify-center items-center">
-            <View className="w-64 h-64 border-4 border-white  bg-opacity-8"></View>
-          </View>
-        </View>
-      )}
-      {/* {scanned && (
+      </View>
+      {/* Button to scan again */}
+      {scanned && (
         <TouchableOpacity
-          className="bg-blue-500 p-2 rounded-lg mt-4"
+          className="bg-blue-500 p-2 rounded-lg my-4 mx-5"
           onPress={() => setScanned(false)}
         >
-          <Text className="text-white">Scan Again</Text>
+          <Text className="text-white text-center">Tap to Scan Again</Text>
         </TouchableOpacity>
-      )} */}
+      )}
     </SafeAreaView>
   );
-};
-
-export default QRScanner;
+}
