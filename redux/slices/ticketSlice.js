@@ -23,8 +23,14 @@ export const getAllTickets = createAsyncThunk("ticket/getTickets", async () => {
 export const markTicketAsUsed = createAsyncThunk(
   "ticket/markTicketAsUsed",
   async (ticketId) => {
-    const response = await updateTicket(ticketId, { scanned: true });
-    return response;
+    try {
+      console.log(ticketId);
+      const response = await updateTicket(ticketId);
+      console.log(response);
+      return response;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 );
 

@@ -21,11 +21,11 @@ const Tickets = () => {
   }, [dispatch]);
 
   const filterTickets = (tickets) => {
-    return tickets.filter((ticket) => ticket.user?.$id === user.$id);
+    return tickets.filter((ticket) => ticket.user?.$id === user?.$id);
   };
 
   const findEvent = (eventId) => {
-    return events.find((event) => event.$id === eventId);
+    return events.find((event) => event?.$id === eventId);
   };
 
   const activeTickets = (tickets) => {
@@ -81,7 +81,7 @@ const Tickets = () => {
         ))
       ) : (
         <Text className="text-lg text-center">
-          {isActive ? "No active tickets" : "No expired tickets"}
+          {/* {isActive ? "No active tickets" : "No expired tickets"} */}
         </Text>
       )}
     </ScrollView>
