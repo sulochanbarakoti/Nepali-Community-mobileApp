@@ -12,13 +12,12 @@ const Tickets = () => {
 
   const dispatch = useDispatch();
   const { tickets } = useSelector((state) => state.ticket);
-
   const { user } = useSelector((state) => state.user);
-
   const { events } = useSelector((state) => state.event);
+
   useEffect(() => {
     dispatch(getAllTickets());
-  }, [dispatch]);
+  }, [dispatch, tickets]);
 
   const filterTickets = (tickets) => {
     return tickets.filter((ticket) => ticket.user?.$id === user?.$id);
@@ -29,16 +28,26 @@ const Tickets = () => {
   };
 
   const activeTickets = (tickets) => {
-    return tickets.filter(
-      // (ticket) => new Date(tickets.eventDate) >= new Date()
-      (ticket) => ticket.scanned === false && ticket.expired === false
-    );
+    return tickets.filter((ticket) => {
+      const eventDate = new Date(ticket.eventDate); // Convert to Date object
+      const today = new Date(); // Current date
+      return (
+        ticket.scanned === false && ticket.expired === false
+        // eventDate >= today // Check if event date is today or in the future
+      );
+    });
   };
+
   const expiredTickets = (tickets) => {
-    return tickets.filter(
-      // (ticket) => new Date(tickets.eventDate) < new Date()
-      (ticket) => ticket.scanned === true || ticket.expired === true
-    );
+    return tickets.filter((ticket) => {
+      const eventDate = new Date(ticket.eventDate); // Convert to Date object
+      const today = new Date(); // Current date
+      return (
+        ticket.scanned === true || // Already scanned tickets
+        ticket.expired === true // Explicitly marked as expired
+        // eventDate < today // Event date is in the past
+      );
+    });
   };
 
   const renderTickets = (tickets) => (

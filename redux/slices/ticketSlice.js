@@ -22,14 +22,12 @@ export const getAllTickets = createAsyncThunk("ticket/getTickets", async () => {
 
 export const markTicketAsUsed = createAsyncThunk(
   "ticket/markTicketAsUsed",
-  async (ticketId) => {
+  async (ticketId, { rejectWithValue }) => {
     try {
-      console.log(ticketId);
       const response = await updateTicket(ticketId);
-      console.log(response);
       return response;
     } catch (error) {
-      throw new Error(error);
+      throw rejectWithValue(error.message);
     }
   }
 );

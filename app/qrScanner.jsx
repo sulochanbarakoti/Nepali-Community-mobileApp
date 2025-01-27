@@ -4,6 +4,7 @@ import { CameraView, Camera } from "expo-camera";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import { markTicketAsUsed } from "../redux/slices/ticketSlice";
+import { router } from "expo-router";
 
 export default function QRScanner() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -23,8 +24,8 @@ export default function QRScanner() {
   const handleBarcodeScanned = ({ type, data }) => {
     setScanned(true);
     dispatch(markTicketAsUsed(data));
-    console.log(`Barcode type: ${type}, data: ${data}`);
-    // Do something with the barcode data
+    // console.log(`Barcode type: ${type}, data: ${data}`);
+    router.push("/home");
   };
 
   if (hasPermission === null) {
