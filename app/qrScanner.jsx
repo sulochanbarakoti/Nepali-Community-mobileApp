@@ -24,7 +24,7 @@ export default function QRScanner() {
   const handleBarcodeScanned = ({ type, data }) => {
     setScanned(true);
     dispatch(markTicketAsUsed(data));
-    // console.log(`Barcode type: ${type}, data: ${data}`);
+    console.log(`Barcode type: ${type}, data: ${data}`);
     router.push("/home");
   };
 
